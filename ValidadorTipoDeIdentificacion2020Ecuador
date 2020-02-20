@@ -1,0 +1,397 @@
+/**
+ * Nombre : Validador de RUC / CEDULA
+ * Version : 2.0
+ * Fecha 10 / 02 /2020
+ * Autor : Francesco Villacis
+ */
+
+public class ValidaTipoIdentificacionX {
+
+    public boolean ValidaIdentifiacion(String strTipoDeIdentificacion) {
+
+        if (strTipoDeIdentificacion != null) {
+
+            if (strTipoDeIdentificacion.length() == 10) {
+
+                return validadorDeCedula(strTipoDeIdentificacion);
+
+            } else if (strTipoDeIdentificacion.length() == 13) {
+
+                return ValidarRuc(strTipoDeIdentificacion);
+
+            }
+        }
+
+        return false;
+    }
+
+    public boolean validadorDeCedula(String strTipoDeIdentificacion) {
+
+        // Verifica Que sea mayor la cantidad de numeros no debe ser diferente a 10
+        if (strTipoDeIdentificacion.length() != 10) {
+            return false;
+        } else {
+
+            // Substring que lee los dos primeros digitos de la cedula
+            int provincia = Integer.parseInt(strTipoDeIdentificacion.substring(0, 2));
+
+            // Verifica que no sean mayor a 24 ni menor que 0
+            if ((provincia > 24) && (provincia < 0)) {
+                return false;
+            } else {
+
+                // Substring que lee el tercerDigito de la Verificacion
+                int tercerD = Integer.parseInt(strTipoDeIdentificacion.substring(2, 3));
+
+                if ((tercerD > 6)) {
+
+                    return false;
+
+                } else {
+
+                    String primerD = strTipoDeIdentificacion.substring(0, 1);
+                    String SegundoD = strTipoDeIdentificacion.substring(1, 2);
+                    String TercerD = strTipoDeIdentificacion.substring(2, 3);
+                    String CuartoD = strTipoDeIdentificacion.substring(3, 4);
+                    String CincoD = strTipoDeIdentificacion.substring(4, 5);
+                    String SeisD = strTipoDeIdentificacion.substring(5, 6);
+                    String SieteD = strTipoDeIdentificacion.substring(6, 7);
+                    String OchoD = strTipoDeIdentificacion.substring(7, 8);
+                    String NueveD = strTipoDeIdentificacion.substring(8, 9);
+
+                    int[] imp = new int[4];
+
+                    imp[0] = Integer.parseInt(SegundoD) * 1;
+
+                    imp[1] = Integer.parseInt(CuartoD) * 1;
+
+                    imp[2] = Integer.parseInt(SeisD) * 1;
+
+                    imp[3] = Integer.parseInt(OchoD) * 1;
+
+                    int SumaI = imp[0] + imp[1] + imp[2] + imp[3];
+
+                    int[] par = new int[5];
+                    par[0] = Integer.parseInt(primerD) * 2;
+
+                    if (par[0] > 9) {
+
+                        par[0] = par[0] - 9;
+
+                    }
+
+                    par[1] = Integer.parseInt(TercerD) * 2;
+
+                    if (par[1] > 9) {
+
+                        par[1] = par[1] - 9;
+
+                    }
+
+                    par[2] = Integer.parseInt(CincoD) * 2;
+
+                    if (par[2] > 9) {
+
+                        par[2] = par[2] - 9;
+
+                    }
+                    par[3] = Integer.parseInt(SieteD) * 2;
+
+                    if (par[3] > 9) {
+
+                        par[3] = par[3] - 9;
+
+                    }
+                    par[4] = Integer.parseInt(NueveD) * 2;
+
+                    if (par[4] > 9) {
+                        par[4] = par[4] - 9;
+                    }
+                    
+                    int SumaP = par[0] + par[1] + par[2] + par[3] + par[4];
+
+                    int SumaT = SumaI + SumaP;
+
+                    int S = SumaT % 10;
+
+                    if (S > 0) {
+
+                        S = 10 - S;
+
+                    }
+                    int UltimoD = Integer.parseInt(strTipoDeIdentificacion.substring(9));
+                    //SI LA RESTA ES IGUAL AL DIGITO VERIFICADOR, SE VALIDA, 0 , SI EL RESIDUO DA 0 , SE VALIDA TAMBIEN
+                    if (S == UltimoD || S == 0) {
+
+                        return true;
+                    }
+
+                }
+
+            }
+            return false;
+        }
+
+    }
+
+    public boolean ValidarRuc(String strTipoDeIdentificacion) {
+
+        // Se verifica que solo pueden haber 13 digitos
+        if (strTipoDeIdentificacion.length() != 13) {
+            return false;
+        } else {
+
+            // Se leen los dos primeros digitos de el ruc
+            int provincia = Integer.parseInt(strTipoDeIdentificacion.substring(0, 2));
+
+            // Se Verifica que los dos primeros digitos no pueden ser mayores a 24
+            if ((provincia > 24) && (provincia < 0)) {
+
+                return false;
+
+            } else {
+
+            }
+            // Se lee solamente el tercer digito de el ruc
+            int tercerDigito = Integer.parseInt(strTipoDeIdentificacion.substring(2, 3));
+
+            // Se verifica que no sea mayor a 9 ni menor a 6
+            if ((tercerDigito > 7 && (tercerDigito) != 9)) {
+
+                return false;
+
+            }
+
+            int UltimosDigitos1 = Integer.parseInt(strTipoDeIdentificacion.substring(10, 11));
+
+            int UltimoDigito2 = Integer.parseInt(strTipoDeIdentificacion.substring(11, 12));
+
+            int UltimoDigito3 = Integer.parseInt(strTipoDeIdentificacion.substring(12, 13));
+
+            if (UltimosDigitos1 != 0) {
+
+                return false;
+
+            } else if (UltimoDigito2 != 0) {
+
+                return false;
+
+            } else if (UltimoDigito3 != 1) {
+
+                return false;
+            }
+
+            // Se leen todos los digitos menos el ultimo, el cual es el verificador
+            
+            if (tercerDigito == 9) {
+
+                String primerD = strTipoDeIdentificacion.substring(0, 1);
+
+                String SegundoD = strTipoDeIdentificacion.substring(1, 2);
+
+                String TercerD = strTipoDeIdentificacion.substring(2, 3);
+
+                String CuartoD = strTipoDeIdentificacion.substring(3, 4);
+
+                String CincoD = strTipoDeIdentificacion.substring(4, 5);
+
+                String SeisD = strTipoDeIdentificacion.substring(5, 6);
+
+                String SieteD = strTipoDeIdentificacion.substring(6, 7);
+
+                String OchoD = strTipoDeIdentificacion.substring(7, 8);
+
+                String NueveD = strTipoDeIdentificacion.substring(8, 9);
+
+                int[] operaciones = new int[9];
+
+                operaciones[0] = Integer.parseInt(primerD) * 4;
+
+                operaciones[1] = Integer.parseInt(SegundoD) * 3;
+
+                operaciones[2] = Integer.parseInt(TercerD) * 2;
+
+                operaciones[3] = Integer.parseInt(CuartoD) * 7;
+
+                operaciones[4] = Integer.parseInt(CincoD) * 6;
+
+                operaciones[5] = Integer.parseInt(SeisD) * 5;
+
+                operaciones[6] = Integer.parseInt(SieteD) * 4;
+
+                operaciones[7] = Integer.parseInt(OchoD) * 3;
+
+                operaciones[8] = Integer.parseInt(NueveD) * 2;
+
+                int Suma = operaciones[0] + operaciones[1] + operaciones[2] + operaciones[3] + 
+                        operaciones[4] + operaciones[5] + operaciones[6] 
+                        + operaciones[7] + operaciones[8];
+
+                int Residuo = Suma % 11;
+
+                int Resta = 11 - Residuo;
+
+                String DigitoVerificador = strTipoDeIdentificacion.substring(9, 10);
+                
+                //SI LA RESTA ES IGUAL AL DIGITO VERIFICADOR, SE VALIDA, 0 , SI EL RESIDUO DA 0 , SE VALIDA TAMBIEN
+                if (Resta == Integer.parseInt(DigitoVerificador) || Residuo == 0) {
+                    
+                    return true;
+                    
+                }
+
+            } else if (tercerDigito == 6 || tercerDigito < 6) {
+
+                String primerD = strTipoDeIdentificacion.substring(0, 1);
+
+                String SegundoD = strTipoDeIdentificacion.substring(1, 2);
+
+                String TercerD = strTipoDeIdentificacion.substring(2, 3);
+
+                String CuartoD = strTipoDeIdentificacion.substring(3, 4);
+
+                String CincoD = strTipoDeIdentificacion.substring(4, 5);
+
+                String SeisD = strTipoDeIdentificacion.substring(5, 6);
+
+                String SieteD = strTipoDeIdentificacion.substring(6, 7);
+
+                String OchoD = strTipoDeIdentificacion.substring(7, 8);
+
+                String NueveD = strTipoDeIdentificacion.substring(8, 9);
+                
+
+                int[] operaciones = new int[8];
+                operaciones[0] = Integer.parseInt(primerD) * 3;
+
+                operaciones[1] = Integer.parseInt(SegundoD) * 2;
+
+                operaciones[2] = Integer.parseInt(TercerD) * 7;
+
+                operaciones[3] = Integer.parseInt(CuartoD) * 6;
+
+                operaciones[4] = Integer.parseInt(CincoD) * 5;
+
+                operaciones[5] = Integer.parseInt(SeisD) * 4;
+
+                operaciones[6] = Integer.parseInt(SieteD) * 3;
+
+                operaciones[7] = Integer.parseInt(OchoD) * 2;
+
+                int Suma = operaciones[0] + operaciones[1] + operaciones[2] 
+                        + operaciones[3] + operaciones[4] + operaciones[5] 
+                        + operaciones[6] + operaciones[7];
+                
+                int Residuo = Suma % 11;
+                
+                int Resta = 11 - Residuo;
+                
+                
+                    // Se lee el ultimo digito de la cedula
+                String DigitoVerificador = strTipoDeIdentificacion.substring(9, 10);
+                
+                //SI LA RESTA ES IGUAL AL DIGITO VERIFICADOR, SE VALIDA, 0 , SI EL RESIDUO DA 0 , SE VALIDA TAMBIEN
+                if (Resta == Integer.parseInt(DigitoVerificador) || Residuo == 0) {
+                    return true;
+                    
+                } else {
+
+                    int[] imp = new int[4];
+                    
+                    imp[0] = Integer.parseInt(SegundoD) * 1;
+
+                    imp[1] = Integer.parseInt(CuartoD) * 1;
+
+                    imp[2] = Integer.parseInt(SeisD) * 1;
+
+                    imp[3] = Integer.parseInt(OchoD) * 1;
+                   
+                     // Se suman todos los arreglos
+                    int SumaI = imp[0] + imp[1] + imp[2] + imp[3];
+
+                    // Se crea otro arreglo para meter todos los pares y multiplicarlos por dos
+                    int[] par = new int[5];
+                    
+                   
+
+                    /*
+		     Se realiza la condicion, si la multiplicacion realizada es mayor a 9 Entonces
+		     se le resta 9
+                     */
+                    
+                     par[0] = Integer.parseInt(primerD) * 2;
+                     
+                    if (par[0] > 9) {
+
+                        par[0] = par[0] - 9;
+
+                    }
+
+                    par[1] = Integer.parseInt(TercerD) * 2;
+
+                    if (par[1] > 9) {
+
+                        par[1] = par[1] - 9;
+
+                    }
+
+                    par[2] = Integer.parseInt(CincoD) * 2;
+
+                    if (par[2] > 9) {
+
+                        par[2] = par[2] - 9;
+
+                    }
+                    par[3] = Integer.parseInt(SieteD) * 2;
+
+                    if (par[3] > 9) {
+
+                        par[3] = par[3] - 9;
+
+                    }
+                    par[4] = Integer.parseInt(NueveD) * 2;
+
+                    if (par[4] > 9) {
+                        
+                        par[4] = par[4] - 9;
+                    }
+                   
+                    // Se suman todos los pares
+                    int SumaP = par[0] + par[1] + par[2] + par[3] + par[4];
+                    
+                    // Se suman los pares e impares
+                    int SumaT = SumaI + SumaP;
+                    
+                   
+                     // Se le saca el residuo a la suma
+                    int S = SumaT % 10;
+                    
+                   
+                     // Si el residuo es mayor a 0, se le resta 10
+                    if (S > 0) {
+
+                        S = 10 - S;
+
+                    }
+                    
+                    // Se lee el ultimo digito de la cedula
+                    int UltimoD = Integer.parseInt(strTipoDeIdentificacion.substring(9, 10));
+                    
+                    
+                    //SI LA RESTA ES IGUAL AL DIGITO VERIFICADOR, SE VALIDA, o , SI EL RESIDUO DA 0 , SE VALIDA TAMBIEN
+                    if (S == UltimoD || S == 0) {
+                        
+                        return true;
+                        
+                    } else {
+                        
+                        return false;
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+
+}
