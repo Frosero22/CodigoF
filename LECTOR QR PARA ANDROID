@@ -1,0 +1,45 @@
+//CODIGO PARA CREAR UN LECTOR DE CODIGO QR
+ import com.google.zxing.Result;
+//LIBRERIA NECESARIO PARA IMPLEMENTAR EL DISEÑO DE SCANNER
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+	//METODO
+private ZXingScannerView mScannerView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    public void btnEscanear(View v){
+
+        mScannerView = new ZXingScannerView(this);
+        //SE ABRE EL SCANNER CON EL DISEÑO
+        setContentView(mScannerView);
+        mScannerView.setResultHandler(this);
+        //SE ABRE LA CAMARA
+        mScannerView.startCamera();
+
+    }
+
+    @Override
+    public void handleResult(Result result) {
+
+    	//SE OBTIENE EL TEXTO QUE ESTA DENTRO DEL CODIGO QR
+        Log.v("HandlerResult",result.getText());
+        //MENSAJE DE DIALOGO
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //SE SETEA UN TITULO A LA VENTANA EMERGENTE
+        builder.setTitle("Resultado del Scan");
+        //SE SETEA EL TEXTO QUE SE LEE DENTRO DEL CODIGO QR
+        builder.setMessage(result.getText());
+        //SE CREA LA VENTANA EMERGENTE
+        AlertDialog alertDialog = builder.create();
+        //SE MUESTRA LA VENTANA EMERGENTE
+        alertDialog.show();
+        //SE RESUME PARA PODER ESCANEAR OTRO QR
+        mScannerView.resumeCameraPreview(this);
+
+    }
+}
